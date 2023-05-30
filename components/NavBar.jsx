@@ -11,6 +11,24 @@ function NavBar() {
           <Link href="/about">About Us</Link>
         </li>
       </ul>
+      <style jsx>
+        {`
+          ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+          }
+
+          li {
+            display: inline-block;
+            margin: 0 10px;
+          }
+
+          li:not(:first-child) {
+            margin-left: 0;
+          }
+        `}
+      </style>
     </nav>
   );
 }

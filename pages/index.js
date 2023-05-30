@@ -10,9 +10,6 @@ function HomePage() {
         <title>My Blog</title>
         <meta name="description" content="This is my Blog home page" />
       </Head>
-      <header>
-        <NavBar />
-      </header>
       <main>
         <h1>My Blog</h1>
       </main>
