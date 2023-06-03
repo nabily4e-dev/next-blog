@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import LightTheme from "./LightTheme";
 
 // Custom hook to manage the light mode state and localStorage
@@ -7,17 +7,26 @@ function useLightMode() {
 
   useEffect(() => {
     // Retrieve the lightMode value from localStorage
-    const lightModeValue = JSON.parse(localStorage.getItem("lightMode"));
-    // If the lightMode value is not null, set the lightMode state to the lightModeValue
+    const lightModeValue = localStorage.getItem("lightMode");
+    // If the lightMode value is not null and is valid JSON, set the lightMode state to the parsed value
     if (lightModeValue !== null) {
-      setLightMode(lightModeValue);
+      try {
+        const parsedValue = JSON.parse(lightModeValue);
+        if (typeof parsedValue === "boolean") {
+          setLightMode(parsedValue);
+        }
+      } catch (error) {
+        console.error("Error parsing lightMode value from localStorage:", error);
+      }
     }
   }, []);
 
-  const toggleLightMode = () => {
-    localStorage.setItem("lightMode", JSON.stringify(!lightMode));
-    setLightMode(!lightMode);
-  };
+  // Toggle the lightMode state and set the localStorage value
+  const toggleLightMode = useCallback(() => {
+    const newLightMode = !lightMode;
+    localStorage.setItem("lightMode", JSON.stringify(newLightMode));
+    setLightMode(newLightMode);
+  }, [lightMode]);
 
   return [lightMode, toggleLightMode];
 }
@@ -27,7 +36,7 @@ function ThemeSwitch() {
   const [lightMode, toggleLightMode] = useLightMode();
 
   console.log("[ThemeSwitch] lightMode: ", lightMode);
-  const text = lightMode ? "Dark Mode" : "Light Mode";
+  const text = useMemo(() => (lightMode ? "Dark Mode" : "Light Mode"), [lightMode]);
 
   return (
     <>
