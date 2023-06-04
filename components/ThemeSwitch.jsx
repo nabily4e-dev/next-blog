@@ -8,6 +8,7 @@ function useLightMode() {
   useEffect(() => {
     // Retrieve the lightMode value from localStorage
     const lightModeValue = localStorage.getItem("lightMode");
+    
     // If the lightMode value is not null and is valid JSON, set the lightMode state to the parsed value
     if (lightModeValue !== null) {
       try {
